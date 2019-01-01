@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import uuid from 'uuid';
 
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { getItems } from '../actions/itemActions';
+import { getItems, deleteItem } from '../actions/itemActions';
 
 class ShoppingList extends Component {
 
@@ -15,22 +14,20 @@ class ShoppingList extends Component {
    }
 
    addItemHandler = () => {
-      const name = prompt('Enter Item');
+      // const name = prompt('Enter Item');
 
-      if (name) {
-         this.setState({
-            items: this.state.items.concat([{
-               id: uuid(),
-               name: name
-            }])
-         });
-      }
+      // if (name) {
+      //    this.setState({
+      //       items: this.state.items.concat([{
+      //          id: uuid(),
+      //          name: name
+      //       }])
+      //    });
+      // }
    }
 
-   deleteItemHandler = (id) => {
-      this.setState({
-         items: this.state.items.filter(item => item.id !== id)
-      });
+   deleteItemHandler = id => {
+      this.props.deleteItem(id);
    }
 
    render() {
@@ -38,13 +35,6 @@ class ShoppingList extends Component {
       return (
          <div>
             <Container>
-               <Button
-                  color="dark"
-                  className="mb-3"
-                  onClick={this.addItemHandler.bind(this)}
-               >
-                  Add Item
-               </Button>
                <ListGroup>
                   <TransitionGroup className="shopping-list">
                      {
@@ -85,4 +75,4 @@ const mapStateToProps = (state) => {
    }
 }
 
-export default connect(mapStateToProps, { getItems })(ShoppingList);
+export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList);
